@@ -33,6 +33,7 @@ config/discourse.conf
 /dbs/*.sql
 /dbs/*.sql.gz
 /db/structure.sql
+data/
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

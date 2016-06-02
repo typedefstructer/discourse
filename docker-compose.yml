@@ -1,0 +1,38 @@
+version: '2'
+services:
+  forum:
+    image: typedefstructer/scforum:base
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    ports:
+      - "3000:3000"
+    volumes:
+      - ..:/src
+      - ./data:/data
+    privileged: true
+    hostname: scforums
+    environment:
+      - PGHOST=scforums_postgres
+    links:
+      - postgres_service:scforums_postgres
+    command: bash
+    stdin_open: true
+    tty: true
+    depends_on:
+      - postgres_phppgadmin
+  postgres_phppgadmin:
+    image: clue/adminer
+    ports:
+     - "8083:80"
+    links:
+     - postgres_service:postgres
+    depends_on:
+     - postgres_service
+  postgres_service:
+    image: postgres:9
+    environment:
+      - POSTGRES_USER=sc
+    volumes:
+      - ./data/db/postgres:/var/lib/postgresql/data
